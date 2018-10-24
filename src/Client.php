@@ -245,19 +245,39 @@ class Client
     }
 
     /**
-    * Ask tracker for more peers, if array is null all torrents will be
-    * reannounced
+    * Remove torrent
     *
     * @param int|array|string ids
     *   an integer referring to a torrent id,
     *   an array of torrent id numbers, sha1 hash strings, or both or
     *   an string, "recently-active", for recently-active torrents
+    * @param boolean deleteLocalData delete local data. (default: false)
     * @returns none
     */
     public function torrentRemove($ids = null, $deleteLocalData = false)
     {
         $arguments = ['method' => 'torrent-remove'];
         $arguments['arguments'] = ['delete-local-data' => $deleteLocalData];
+        if($ids) $arguments['arguments'] = array_merge($arguments['arguments'], ['ids' => $ids]);
+        return $this->request($arguments);
+    }
+
+    /**
+    * Move a torrent
+    *
+    * @param int|array|string ids
+    *   an integer referring to a torrent id,
+    *   an array of torrent id numbers, sha1 hash strings, or both or
+    *   an string, "recently-active", for recently-active torrents
+    * @param string location the new torrent location
+    * @param boolean move if true, move from previous location, otherwise,
+    * search "location" for files (default: false)
+    * @returns none
+    */
+    public function torrentSetLocation($ids = null, $location, $move = false)
+    {
+        $arguments = ['method' => 'torrent-set-location'];
+        $arguments['arguments'] = ['location' => $location, 'move' => $move];
         if($ids) $arguments['arguments'] = array_merge($arguments['arguments'], ['ids' => $ids]);
         return $this->request($arguments);
     }
