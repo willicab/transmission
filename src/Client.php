@@ -104,6 +104,35 @@ class Client
     }
 
     /**
+    * Add a torrent from a filename
+    *
+    * Arguments:
+    *  key                  | value type & description
+    *  ---------------------+-------------------------------------------------
+    *  "download-dir"       | string      path to download the torrent to
+    *  "paused"             | boolean     if true, don't start the torrent
+    *  "peer-limit"         | number      maximum number of peers
+    *  "bandwidthPriority"  | number      torrent's bandwidth tr_priority_t
+    *  "files-wanted"       | array       indices of file(s) to download
+    *  "files-unwanted"     | array       indices of file(s) to not download
+    *  "priority-high"      | array       indices of high-priority file(s)
+    *  "priority-low"       | array       indices of low-priority file(s)
+    *  "priority-normal"    | array       indices of normal-priority file(s)
+    *
+    * @param string filename filename or URL of the .torrent file
+    * @returns On success, a torrent-added object with the fields for id, name
+    * and hashString. On failure due to a duplicate torrent existing, 
+    * a torrent-duplicate object in the same form.
+    */
+    public function addFilename($filename, $extra = null)
+    {
+        $arguments = ['method' => 'torrent-add'];
+        $arguments['arguments'] = ['filename' => $filename];
+        if($extra) $arguments['arguments'][] = $extra;
+        return $this->request($arguments);
+    }    
+
+    /**
     * Get the 'X-Transmission-Session-Id' code
     *
     * @returns an array with the session arguments
