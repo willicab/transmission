@@ -24,6 +24,34 @@ class Client
         return $this->request($params);
     }
 
+    public function torrentStartNow($ids = null)
+    {
+        $params = ['method' => 'torrent-start-now'];
+        if($ids) $params['ids'] = $ids;
+        return $this->request($params);
+    }
+
+    public function torrentStop($ids = null)
+    {
+        $params = ['method' => 'torrent-stop'];
+        if($ids) $params['ids'] = $ids;
+        return $this->request($params);
+    }
+
+    public function torrentVerify($ids = null)
+    {
+        $params = ['method' => 'torrent-verify'];
+        if($ids) $params['ids'] = $ids;
+        return $this->request($params);
+    }
+
+    public function torrentReannounce($ids = null)
+    {
+        $params = ['method' => 'torrent-reannounce'];
+        if($ids) $params['ids'] = $ids;
+        return $this->request($params);
+    }
+
     public function connect()
     {
         if($this->user && $this->password)
