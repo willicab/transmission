@@ -245,6 +245,24 @@ class Client
     }
 
     /**
+    * Ask tracker for more peers, if array is null all torrents will be
+    * reannounced
+    *
+    * @param int|array|string ids
+    *   an integer referring to a torrent id,
+    *   an array of torrent id numbers, sha1 hash strings, or both or
+    *   an string, "recently-active", for recently-active torrents
+    * @returns none
+    */
+    public function torrentRemove($ids = null, $deleteLocalData = false)
+    {
+        $arguments = ['method' => 'torrent-remove'];
+        $arguments['arguments'] = ['delete-local-data' => $deleteLocalData];
+        if($ids) $arguments['arguments'] = array_merge($arguments['arguments'], ['ids' => $ids]);
+        return $this->request($arguments);
+    }
+
+    /**
     * Get the 'X-Transmission-Session-Id' code
     *
     * @returns an array with the session arguments
