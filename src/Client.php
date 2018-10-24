@@ -17,6 +17,24 @@ class Client
         if (isset($params['password'])) $this->password = $params['password'];
     }
 
+    public function connect()
+    {
+        if($this->user && $this->password)
+            $this->auth = 'Authorization: Basic ' . base64_encode($this->user . ':' . $this->password);
+        print $this->host;
+        return $this->sessionGet();
+    }
+
+    public function sessionGet()
+    {
+        $params = [
+            'arguments' => [],
+            'method' => 'session-get'
+        ];
+        return $this->request($params);
+    }
+
+    private function request($params)
     private function request($params)
     {
         $curl = curl_init();
