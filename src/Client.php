@@ -104,6 +104,53 @@ class Client
     }
 
     /**
+    * Ask tracker for more peers, if array is null all torrents will be
+    * reannounced
+    *
+    * string                | value type & description
+    * ----------------------+-------------------------------------------------
+    * "bandwidthPriority"   | number     this torrent's bandwidth tr_priority_t
+    * "downloadLimit"       | number     maximum download speed (KBps)
+    * "downloadLimited"     | boolean    true if "downloadLimit" is honored
+    * "files-wanted"        | array      indices of file(s) to download
+    * "files-unwanted"      | array      indices of file(s) to not download
+    * "honorsSessionLimits" | boolean    true if session upload limits are honored
+    * "location"            | string     new location of the torrent's content
+    * "peer-limit"          | number     maximum number of peers
+    * "priority-high"       | array      indices of high-priority file(s)
+    * "priority-low"        | array      indices of low-priority file(s)
+    * "priority-normal"     | array      indices of normal-priority file(s)
+    * "queuePosition"       | number     position of this torrent in its queue [0...n)
+    * "seedIdleLimit"       | number     torrent-level number of minutes of seeding inactivity
+    * "seedIdleMode"        | number     which seeding inactivity to use.  See tr_idlelimit
+    * "seedRatioLimit"      | double     torrent-level seeding ratio
+    * "seedRatioMode"       | number     which ratio to use.  See tr_ratiolimit
+    * "trackerAdd"          | array      strings of announce URLs to add
+    * "trackerRemove"       | array      ids of trackers to remove
+    * "trackerReplace"      | array      pairs of <trackerId/new announce URLs>
+    * "uploadLimit"         | number     maximum upload speed (KBps)
+    * "uploadLimited"       | boolean    true if "uploadLimit" is honored
+    *
+    * Just as an "null" ids value is shorthand for "all ids", using an empty
+    * array for files-wanted, files-unwanted, priority-high, priority-low,
+    * or priority-normal is shorthand for saying "all files".
+    *
+    * @param int|array|string ids
+    *   an integer referring to a torrent id,
+    *   an array of torrent id numbers, sha1 hash strings, or both or
+    *   an string, "recently-active", for recently-active torrents
+    * @returns none
+    */
+    public function torrentSet($ids = null, $fields)
+    {
+        $arguments = ['method' => 'torrent-set'];
+        if($ids) $arguments['arguments'] = ['ids' => $ids];
+        $arguments['arguments'] = isset($arguments['arguments']) ?
+            array_merge($arguments['arguments'], $fields) : $fields;
+        return $this->request($arguments);
+    }
+
+    /**
     * Get information of torrents
     *
     * @param int|array|string ids
@@ -131,7 +178,6 @@ class Client
         $arguments = ['method' => 'torrent-get'];
         $arguments['arguments'] = $fields ? ['fields' => $fields] : ['fields' => ['hashString', 'id', 'name']];
         if($ids) $arguments['arguments'] = array_merge($arguments['arguments'], ['ids' => $ids]);
-        print_r($arguments);
         return $this->request($arguments);
     }
 
@@ -171,7 +217,10 @@ class Client
     * Fields:
     *  key                  | value type & description
     *  ---------------------+-------------------------------------------------
+    *  "cookies"            | string      pointer to a string of one or more cookies.
     *  "download-dir"       | string      path to download the torrent to
+    *  "filename"           | string      filename or URL of the .torrent file
+    *  "metainfo"           | string      base64-encoded .torrent content
     *  "paused"             | boolean     if true, don't start the torrent
     *  "peer-limit"         | number      maximum number of peers
     *  "bandwidthPriority"  | number      torrent's bandwidth tr_priority_t
