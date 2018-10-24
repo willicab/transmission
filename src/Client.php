@@ -283,6 +283,24 @@ class Client
     }
 
     /**
+    * Rename a torrent
+    *
+    * @param int|array ids
+    *   an integer referring to a torrent id,
+    *   an array of torrent id number (must only be 1 torrent)
+    * @param string path the path to the file or folder that will be renamed
+    * @param string name the file or folder's new name
+    * @returns none
+    */
+    public function torrentRenamePath($ids = null, $path, $name)
+    {
+        $arguments = ['method' => 'torrent-rename-path'];
+        $arguments['arguments'] = ['path' => $path, 'name' => $name,];
+        if($ids) $arguments['arguments'] = array_merge($arguments['arguments'], ['ids' => $ids]);
+        return $this->request($arguments);
+    }
+
+    /**
     * Get the 'X-Transmission-Session-Id' code
     *
     * @returns an array with the session arguments
