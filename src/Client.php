@@ -17,6 +17,13 @@ class Client
         if (isset($params['password'])) $this->password = $params['password'];
     }
 
+    public function torrentStart($ids = null)
+    {
+        $params = ['method' => 'torrent-start'];
+        if($ids) $params['ids'] = $ids;
+        return $this->request($params);
+    }
+
     public function connect()
     {
         if($this->user && $this->password)
