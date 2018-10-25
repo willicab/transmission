@@ -327,6 +327,21 @@ class Client
     }
 
     /**
+    * Get the session arguments
+    *
+    * @param array fields a array with the fields
+    * @returns an array with the session arguments
+    */
+    public function sessionSet($fields)
+    {
+        $arguments = [
+            'arguments' => [$fields],
+            'method' => 'session-set'
+        ];
+        return $this->request($arguments);
+    }
+
+    /**
     * Send a request to the server
     *
     * @param array arguments an array with the method and arguments
