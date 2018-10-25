@@ -11,7 +11,7 @@
     },
     "authors": [
         {
-            "name": "William cabrera",
+            "name": "William cabrera"
         }
     ],
     "autoload": {
@@ -19,7 +19,7 @@
             "Willicab\\Transmission\\": "src/"
         },
         "files": [
-            "src/Client.php",
+            "src/Client.php"
         ]
     }
 }
