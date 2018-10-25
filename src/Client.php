@@ -4,8 +4,8 @@ namespace Willicab\Transmission;
 
 class Client
 {
-    private $host = '';
-    private $port = 9091;
+    private $host;
+    private $port;
     private $user;
     private $password;
     private $auth;
