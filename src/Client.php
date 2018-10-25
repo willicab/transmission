@@ -440,6 +440,20 @@ class Client
     }
 
     /**
+    * This method tests how much free space is available in a
+    * client-specified folder.
+    *
+    * @param string path the directory to query
+    * @returns a array with the path and the size, in bytes, of the free space
+    * in that directory
+    */
+    public function freeSpace($path)
+    {
+        $arguments = ['method' => 'free-space', 'arguments' => ['path' => $path]];
+        return $this->request($arguments);
+    }
+
+    /**
     * Send a request to the server
     *
     * @param array arguments an array with the method and arguments
