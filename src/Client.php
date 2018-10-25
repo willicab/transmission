@@ -330,13 +330,54 @@ class Client
     * Get the session arguments
     *
     * @param array fields a array with the fields
-    * @returns an array with the session arguments
+    * @returns none
     */
     public function sessionSet($fields)
     {
         $arguments = [
             'arguments' => [$fields],
             'method' => 'session-set'
+        ];
+        return $this->request($arguments);
+    }
+
+    /**
+    * Get the session stats
+    *
+    * fields return
+    * ---------------------------+-------------------------------+
+    * string                     | value type                    |
+    * ---------------------------+-------------------------------+
+    * "activeTorrentCount"       | number                        |
+    * "downloadSpeed"            | number                        |
+    * "pausedTorrentCount"       | number                        |
+    * "torrentCount"             | number                        |
+    * "uploadSpeed"              | number                        |
+    * ---------------------------+-------------------------------+
+    * "cumulative-stats"         | object, containing:           |
+    *                            +------------------+------------+
+    *                            | uploadedBytes    | number     |
+    *                            | downloadedBytes  | number     |
+    *                            | filesAdded       | number     |
+    *                            | sessionCount     | number     |
+    *                            | secondsActive    | number     |
+    * ---------------------------+-------------------------------+
+    * "current-stats"            | object, containing:           |
+    *                            +------------------+------------+
+    *                            | uploadedBytes    | number     |
+    *                            | downloadedBytes  | number     |
+    *                            | filesAdded       | number     |
+    *                            | sessionCount     | number     |
+    *                            | secondsActive    | number     |
+    * ---------------------------+-------------------------------+
+    *
+    * @returns an array with the session stats
+    */
+    public function sessionStats()
+    {
+        $arguments = [
+            'arguments' => [],
+            'method' => 'session-stats'
         ];
         return $this->request($arguments);
     }
