@@ -309,7 +309,7 @@ class Client
     {
         if($this->user && $this->password)
             $this->auth = 'Authorization: Basic ' . base64_encode($this->user . ':' . $this->password);
-        return $this->portTest();
+        return $this->sessionStats();
     }
 
     /**
@@ -407,6 +407,18 @@ class Client
         $arguments = [
             'arguments' => [],
             'method' => 'port-test'
+        ];
+        return $this->request($arguments);
+    }
+
+    /**
+    * This method tells the transmission session to shut down.
+    */
+    public function sessionClose()
+    {
+        $arguments = [
+            'arguments' => [],
+            'method' => 'session-close'
         ];
         return $this->request($arguments);
     }
