@@ -1,0 +1,25 @@
+{
+    "name": "willicab/transmission",
+    "description": "PHP implementation of Transmission RPC.",
+    "type": "project",
+    "license": "MIT",
+    "homepage": "https://github.com/willicab/transmission",
+    "keywords": ["transmission", "p2p", "torrent", "RPC", "PHP"],
+    "require": {
+        "php": ">=7.2.0",
+        "ext-curl": "*",
+    },
+    "authors": [
+        {
+            "name": "William cabrera",
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Willicab\\Transmission\\": "src/"
+        },
+        "files": [
+            "src/Client.php",
+        ]
+    }
+}
