@@ -424,6 +424,22 @@ class Client
     }
 
     /**
+    * Move a torrent's queue
+    *
+    * @param int|array ids
+    *   an integer referring to a torrent id,
+    *   an array of torrent id number (must only be 1 torrent)
+    * @param string where where move the queue (top|up|down|bottom)
+    * @returns none
+    */
+    public function queueMove($ids = null, $where)
+    {
+        $arguments = ['method' => 'queue-move-' . strtolower($where), 'arguments' => []];
+        if($ids) $arguments['arguments']['ids'] = $ids;
+        return $this->request($arguments);
+    }
+
+    /**
     * Send a request to the server
     *
     * @param array arguments an array with the method and arguments
