@@ -383,6 +383,20 @@ class Client
     }
 
     /**
+    * Update the blocklist size
+    *
+    * @returns a number "blocklist-size"
+    */
+    public function blocklistUpdate()
+    {
+        $arguments = [
+            'arguments' => [],
+            'method' => 'blocklist-update'
+        ];
+        return $this->request($arguments);
+    }
+
+    /**
     * Send a request to the server
     *
     * @param array arguments an array with the method and arguments
