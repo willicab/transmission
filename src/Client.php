@@ -309,7 +309,7 @@ class Client
     {
         if($this->user && $this->password)
             $this->auth = 'Authorization: Basic ' . base64_encode($this->user . ':' . $this->password);
-        return $this->sessionGet();
+        return $this->portTest();
     }
 
     /**
@@ -392,6 +392,21 @@ class Client
         $arguments = [
             'arguments' => [],
             'method' => 'blocklist-update'
+        ];
+        return $this->request($arguments);
+    }
+
+    /**
+    * This method tests to see if your incoming peer port is accessible from
+    * the outside world.
+    *
+    * @returns a bool, "port-is-open"
+    */
+    public function portTest()
+    {
+        $arguments = [
+            'arguments' => [],
+            'method' => 'port-test'
         ];
         return $this->request($arguments);
     }
