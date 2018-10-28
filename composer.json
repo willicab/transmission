@@ -6,7 +6,7 @@
     "homepage": "https://github.com/willicab/transmission",
     "keywords": ["transmission", "p2p", "torrent", "RPC", "PHP"],
     "require": {
-        "php": "^5.3.3 || ^7.0",
+        "php": ">=7.0",
         "ext-curl": "*"
     },
     "authors": [
