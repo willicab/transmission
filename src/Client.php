@@ -1,22 +1,39 @@
 <?php
-
+/**
+ * Another PHP implementation of Transmission RPC Spec.
+ *
+ * @category  Library
+ * @package   Transmission
+ * @author    William Cabrera <william@linux.es>
+ * @copyright 2018 William Cabrera (@willicab)
+ * @license   https://opensource.org/licenses/MIT    MIT
+ * @link      https://github.com/willicab/transmission
+ */
 namespace Willicab\Transmission;
 
 class Client
 {
-    private $host;
-    private $port;
+    private $host = 'http://localhost';
+    private $port = 9091;
     private $user;
     private $password;
     private $auth;
     private $sessionId;
 
-    public function __construct($arguments = [])
+    public function __construct(array $arguments = [])
     {
-        $this->host = isset($arguments['host']) ? $arguments['host'] : 'http://localhost';
-        $this->port = isset($arguments['port']) ? $arguments['port'] : 9091 ;
-        if (isset($arguments['user'])) $this->user = $arguments['user'];
-        if (isset($arguments['password'])) $this->password = $arguments['password'];
+        if (isset($arguments['host'])) {
+            $this->host = $arguments['host'];
+        }
+        if (isset($arguments['port'])) {
+            $this->port = $arguments['port'];
+        }
+        if (isset($arguments['user'])) {
+            $this->user = $arguments['user'];
+        }
+        if (isset($arguments['password'])) {
+            $this->password = $arguments['password'];
+        }
     }
 
     /**
@@ -29,10 +46,12 @@ class Client
     *   an string, "recently-active", for recently-active torrents
     * @returns none
     */
-    public function torrentStart($ids = null)
+    public function torrentStart($ids = null) : object
     {
         $arguments = ['method' => 'torrent-start'];
-        if($ids) $arguments['arguments'] = ['ids' => $ids];
+        if ($ids) {
+            $arguments['arguments'] = ['ids' => $ids];
+        }
         return $this->request($arguments);
     }
 
@@ -46,10 +65,12 @@ class Client
     *   an string, "recently-active", for recently-active torrents
     * @returns none
     */
-    public function torrentStartNow($ids = null)
+    public function torrentStartNow($ids = null) : object
     {
         $arguments = ['method' => 'torrent-start-now'];
-        if($ids) $arguments['arguments'] = ['ids' => $ids];
+        if ($ids) {
+            $arguments['arguments'] = ['ids' => $ids];
+        }
         return $this->request($arguments);
     }
 
@@ -62,10 +83,12 @@ class Client
     *   an string, "recently-active", for recently-active torrents
     * @returns none
     */
-    public function torrentStop($ids = null)
+    public function torrentStop($ids = null) : object
     {
         $arguments = ['method' => 'torrent-stop'];
-        if($ids) $arguments['arguments'] = ['ids' => $ids];
+        if ($ids) {
+            $arguments['arguments'] = ['ids' => $ids];
+        }
         return $this->request($arguments);
     }
 
@@ -79,10 +102,12 @@ class Client
     *   an string, "recently-active", for recently-active torrents
     * @returns none
     */
-    public function torrentVerify($ids = null)
+    public function torrentVerify($ids = null) : object
     {
         $arguments = ['method' => 'torrent-verify'];
-        if($ids) $arguments['arguments'] = ['ids' => $ids];
+        if ($ids) {
+            $arguments['arguments'] = ['ids' => $ids];
+        }
         return $this->request($arguments);
     }
 
@@ -96,10 +121,12 @@ class Client
     *   an string, "recently-active", for recently-active torrents
     * @returns none
     */
-    public function torrentReannounce($ids = null)
+    public function torrentReannounce($ids = null) : object
     {
         $arguments = ['method' => 'torrent-reannounce'];
-        if($ids) $arguments['arguments'] = ['ids' => $ids];
+        if ($ids) {
+            $arguments['arguments'] = ['ids' => $ids];
+        }
         return $this->request($arguments);
     }
 
@@ -109,27 +136,27 @@ class Client
     *
     * string                | value type & description
     * ----------------------+-------------------------------------------------
-    * "bandwidthPriority"   | number     this torrent's bandwidth tr_priority_t
-    * "downloadLimit"       | number     maximum download speed (KBps)
-    * "downloadLimited"     | boolean    true if "downloadLimit" is honored
-    * "files-wanted"        | array      indices of file(s) to download
-    * "files-unwanted"      | array      indices of file(s) to not download
-    * "honorsSessionLimits" | boolean    true if session upload limits are honored
-    * "location"            | string     new location of the torrent's content
-    * "peer-limit"          | number     maximum number of peers
-    * "priority-high"       | array      indices of high-priority file(s)
-    * "priority-low"        | array      indices of low-priority file(s)
-    * "priority-normal"     | array      indices of normal-priority file(s)
-    * "queuePosition"       | number     position of this torrent in its queue [0...n)
-    * "seedIdleLimit"       | number     torrent-level number of minutes of seeding inactivity
-    * "seedIdleMode"        | number     which seeding inactivity to use.  See tr_idlelimit
-    * "seedRatioLimit"      | double     torrent-level seeding ratio
-    * "seedRatioMode"       | number     which ratio to use.  See tr_ratiolimit
-    * "trackerAdd"          | array      strings of announce URLs to add
-    * "trackerRemove"       | array      ids of trackers to remove
-    * "trackerReplace"      | array      pairs of <trackerId/new announce URLs>
-    * "uploadLimit"         | number     maximum upload speed (KBps)
-    * "uploadLimited"       | boolean    true if "uploadLimit" is honored
+    * "bandwidthPriority"   | number   this torrent's bandwidth tr_priority_t
+    * "downloadLimit"       | number   maximum download speed (KBps)
+    * "downloadLimited"     | boolean  true if "downloadLimit" is honored
+    * "files-wanted"        | array    indices of file(s) to download
+    * "files-unwanted"      | array    indices of file(s) to not download
+    * "honorsSessionLimits" | boolean  true if session upload limits are honored
+    * "location"            | string   new location of the torrent's content
+    * "peer-limit"          | number   maximum number of peers
+    * "priority-high"       | array    indices of high-priority file(s)
+    * "priority-low"        | array    indices of low-priority file(s)
+    * "priority-normal"     | array    indices of normal-priority file(s)
+    * "queuePosition"       | number   position of this torrent in its queue
+    * "seedIdleLimit"       | number   number of minutes of seeding inactivity
+    * "seedIdleMode"        | number   which seeding inactivity to use.
+    * "seedRatioLimit"      | double   torrent-level seeding ratio
+    * "seedRatioMode"       | number   which ratio to use.  See tr_ratiolimit
+    * "trackerAdd"          | array    strings of announce URLs to add
+    * "trackerRemove"       | array    ids of trackers to remove
+    * "trackerReplace"      | array    pairs of <trackerId/new announce URLs>
+    * "uploadLimit"         | number   maximum upload speed (KBps)
+    * "uploadLimited"       | boolean  true if "uploadLimit" is honored
     *
     * Just as an "null" ids value is shorthand for "all ids", using an empty
     * array for files-wanted, files-unwanted, priority-high, priority-low,
@@ -141,10 +168,12 @@ class Client
     *   an string, "recently-active", for recently-active torrents
     * @returns none
     */
-    public function torrentSet($ids = null, $fields)
+    public function torrentSet($ids = null, array $fields = []) : object
     {
         $arguments = ['method' => 'torrent-set'];
-        if($ids) $arguments['arguments'] = ['ids' => $ids];
+        if ($ids) {
+            $arguments['arguments'] = ['ids' => $ids];
+        }
         $arguments['arguments'] = isset($arguments['arguments']) ?
             array_merge($arguments['arguments'], $fields) : $fields;
         return $this->request($arguments);
@@ -173,11 +202,15 @@ class Client
     * uploadRatio, wanted, webseeds, webseedsSendingToUs
     * @returns an array with the information of torrents
     */
-    public function torrentGet($ids = null, $fields = null)
+    public function torrentGet($ids = null, array $fields = null) : object
     {
         $arguments = ['method' => 'torrent-get'];
-        $arguments['arguments'] = $fields ? ['fields' => $fields] : ['fields' => ['hashString', 'id', 'name']];
-        if($ids) $arguments['arguments'] = array_merge($arguments['arguments'], ['ids' => $ids]);
+        $arguments['arguments'] = $fields ? ['fields' => $fields] :
+                                    ['fields' => ['hashString', 'id', 'name']];
+        if ($ids) {
+            $arguments['arguments'] =
+                        array_merge($arguments['arguments'], ['ids' => $ids]);
+        }
         return $this->request($arguments);
     }
 
@@ -203,11 +236,14 @@ class Client
     * and hashString. On failure due to a duplicate torrent existing,
     * a "torrent-duplicate" object in the same form.
     */
-    public function addFilename($filename, $fields = null)
+    public function addFilename(string $filename, array $fields = null) : object
     {
         $arguments = ['method' => 'torrent-add'];
         $arguments['arguments'] = ['filename' => $filename];
-        if($fields) $arguments['arguments'] = array_merge($arguments['arguments'], $fields);
+        if ($fields) {
+            $arguments['arguments'] =
+                                array_merge($arguments['arguments'], $fields);
+        }
         return $this->request($arguments);
     }
 
@@ -216,19 +252,19 @@ class Client
     *
     * Fields:
     *  key                  | value type & description
-    *  ---------------------+-------------------------------------------------
-    *  "cookies"            | string      pointer to a string of one or more cookies.
-    *  "download-dir"       | string      path to download the torrent to
-    *  "filename"           | string      filename or URL of the .torrent file
-    *  "metainfo"           | string      base64-encoded .torrent content
-    *  "paused"             | boolean     if true, don't start the torrent
-    *  "peer-limit"         | number      maximum number of peers
-    *  "bandwidthPriority"  | number      torrent's bandwidth tr_priority_t
-    *  "files-wanted"       | array       indices of file(s) to download
-    *  "files-unwanted"     | array       indices of file(s) to not download
-    *  "priority-high"      | array       indices of high-priority file(s)
-    *  "priority-low"       | array       indices of low-priority file(s)
-    *  "priority-normal"    | array       indices of normal-priority file(s)
+    *  ---------------------+---------------------------------------------------
+    *  "cookies"            | string  pointer to a string of one or more cookies
+    *  "download-dir"       | string  path to download the torrent to
+    *  "filename"           | string  filename or URL of the .torrent file
+    *  "metainfo"           | string  base64-encoded .torrent content
+    *  "paused"             | boolean if true, don't start the torrent
+    *  "peer-limit"         | number  maximum number of peers
+    *  "bandwidthPriority"  | number  torrent's bandwidth tr_priority_t
+    *  "files-wanted"       | array   indices of file(s) to download
+    *  "files-unwanted"     | array   indices of file(s) to not download
+    *  "priority-high"      | array   indices of high-priority file(s)
+    *  "priority-low"       | array   indices of low-priority file(s)
+    *  "priority-normal"    | array   indices of normal-priority file(s)
     *
     * @param string metainfo base64-encoded .torrent content
     * @param array fields a array with the fields
@@ -236,11 +272,14 @@ class Client
     * and hashString. On failure due to a duplicate torrent existing,
     * a "torrent-duplicate" object in the same form.
     */
-    public function addMetainfo($metainfo, $fields = null)
+    public function addMetainfo(string $metainfo, array $fields = null) : object
     {
         $arguments = ['method' => 'torrent-add'];
         $arguments['arguments'] = ['metainfo' => $metainfo];
-        if($fields) $arguments['arguments'] = array_merge($arguments['arguments'], $fields);
+        if ($fields) {
+            $arguments['arguments'] =
+                                array_merge($arguments['arguments'], $fields);
+        }
         return $this->request($arguments);
     }
 
@@ -254,11 +293,15 @@ class Client
     * @param boolean deleteLocalData delete local data. (default: false)
     * @returns none
     */
-    public function torrentRemove($ids = null, $deleteLocalData = false)
+    public function torrentRemove($ids = null, bool $deleteLocalData = false)
+    : object
     {
         $arguments = ['method' => 'torrent-remove'];
         $arguments['arguments'] = ['delete-local-data' => $deleteLocalData];
-        if($ids) $arguments['arguments'] = array_merge($arguments['arguments'], ['ids' => $ids]);
+        if ($ids) {
+            $arguments['arguments'] =
+                        array_merge($arguments['arguments'], ['ids' => $ids]);
+        }
         return $this->request($arguments);
     }
 
@@ -274,11 +317,17 @@ class Client
     * search "location" for files (default: false)
     * @returns none
     */
-    public function torrentSetLocation($ids = null, $location, $move = false)
-    {
+    public function torrentSetLocation(
+        $ids = null,
+        string $location = '',
+        bool $move = false
+    ) : object {
         $arguments = ['method' => 'torrent-set-location'];
         $arguments['arguments'] = ['location' => $location, 'move' => $move];
-        if($ids) $arguments['arguments'] = array_merge($arguments['arguments'], ['ids' => $ids]);
+        if ($ids) {
+            $arguments['arguments'] =
+                        array_merge($arguments['arguments'], ['ids' => $ids]);
+        }
         return $this->request($arguments);
     }
 
@@ -292,11 +341,17 @@ class Client
     * @param string name the file or folder's new name
     * @returns none
     */
-    public function torrentRenamePath($ids = null, $path, $name)
-    {
+    public function torrentRenamePath(
+        $ids = null,
+        string $path = '',
+        string $name = ''
+    ) : object {
         $arguments = ['method' => 'torrent-rename-path'];
         $arguments['arguments'] = ['path' => $path, 'name' => $name,];
-        if($ids) $arguments['arguments'] = array_merge($arguments['arguments'], ['ids' => $ids]);
+        if ($ids) {
+            $arguments['arguments'] =
+                        array_merge($arguments['arguments'], ['ids' => $ids]);
+        }
         return $this->request($arguments);
     }
 
@@ -305,10 +360,12 @@ class Client
     *
     * @returns an array with the session arguments
     */
-    public function connect()
+    public function connect() : object
     {
-        if($this->user && $this->password)
-            $this->auth = 'Authorization: Basic ' . base64_encode($this->user . ':' . $this->password);
+        if ($this->user && $this->password) {
+            $this->auth = 'Authorization: Basic ' .
+                            base64_encode($this->user . ':' . $this->password);
+        }
         return $this->sessionStats();
     }
 
@@ -317,7 +374,7 @@ class Client
     *
     * @returns an array with the session arguments
     */
-    public function sessionGet()
+    public function sessionGet() : object
     {
         $arguments = [
             'arguments' => [],
@@ -332,7 +389,7 @@ class Client
     * @param array fields a array with the fields
     * @returns none
     */
-    public function sessionSet($fields)
+    public function sessionSet($fields) : object
     {
         $arguments = [
             'arguments' => [$fields],
@@ -373,7 +430,7 @@ class Client
     *
     * @returns an array with the session stats
     */
-    public function sessionStats()
+    public function sessionStats() : object
     {
         $arguments = [
             'arguments' => [],
@@ -387,7 +444,7 @@ class Client
     *
     * @returns a number "blocklist-size"
     */
-    public function blocklistUpdate()
+    public function blocklistUpdate() : object
     {
         $arguments = [
             'arguments' => [],
@@ -402,7 +459,7 @@ class Client
     *
     * @returns a bool, "port-is-open"
     */
-    public function portTest()
+    public function portTest() : object
     {
         $arguments = [
             'arguments' => [],
@@ -414,7 +471,7 @@ class Client
     /**
     * This method tells the transmission session to shut down.
     */
-    public function sessionClose()
+    public function sessionClose() : object
     {
         $arguments = [
             'arguments' => [],
@@ -432,10 +489,15 @@ class Client
     * @param string where where move the queue (top|up|down|bottom)
     * @returns none
     */
-    public function queueMove($ids = null, $where)
+    public function queueMove($ids = null, string $where = '')
     {
-        $arguments = ['method' => 'queue-move-' . strtolower($where), 'arguments' => []];
-        if($ids) $arguments['arguments']['ids'] = $ids;
+        $arguments = [
+            'method' => 'queue-move-' . strtolower($where),
+            'arguments' => []
+        ];
+        if ($ids) {
+            $arguments['arguments']['ids'] = $ids;
+        }
         return $this->request($arguments);
     }
 
@@ -449,7 +511,10 @@ class Client
     */
     public function freeSpace($path)
     {
-        $arguments = ['method' => 'free-space', 'arguments' => ['path' => $path]];
+        $arguments = [
+            'method' => 'free-space',
+            'arguments' => ['path' => $path]
+        ];
         return $this->request($arguments);
     }
 
@@ -462,27 +527,37 @@ class Client
     private function request($arguments)
     {
         $curl = curl_init();
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => $this->host.':'.$this->port.'/transmission/rpc',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_CUSTOMREQUEST => "POST",
-          CURLOPT_POSTFIELDS => json_encode($arguments),
-          CURLOPT_HTTPHEADER => array(
-            (isset($this->auth) ? $this->auth : ''),
-            "Content-Type: application/json",
-            "X-Transmission-Session-Id: " . $this->sessionId
-          ),
-        ));
+        curl_setopt_array(
+            $curl,
+            [
+                CURLOPT_URL => $this->host . ':' .
+                    $this->port . '/transmission/rpc',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => json_encode($arguments),
+                CURLOPT_HTTPHEADER => [
+                    (isset($this->auth) ? $this->auth : ''),
+                    "Content-Type: application/json",
+                    "X-Transmission-Session-Id: " . $this->sessionId
+                ],
+            ]
+        );
         $response = curl_exec($curl);
         $err = curl_error($curl);
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
-        switch($httpCode) {
+        switch ($httpCode) {
             case '200':
                 return json_decode($response);
             case '409':
-                preg_match_all('/X-Transmission-Session-Id: ([^<]*)/m', $response, $m, PREG_SET_ORDER, 0);
+                preg_match_all(
+                    '/X-Transmission-Session-Id: ([^<]*)/m',
+                    $response,
+                    $m,
+                    PREG_SET_ORDER,
+                    0
+                );
                 $this->sessionId = $m[0][1];
                 return $this->request($arguments);
             case '401':
@@ -493,7 +568,8 @@ class Client
             default:
                 return [
                     'arguments' => [],
-                    'result' => $httpCode . ': Unexpected response received from Transmission'
+                    'result' => $httpCode .
+                    ': Unexpected response received from Transmission'
                 ];
         }
     }
